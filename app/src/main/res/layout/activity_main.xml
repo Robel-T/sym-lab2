@@ -6,13 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <Button
+        android:id="@+id/asynchrone"
+        android:layout_width="183dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="30dp"
+        android:background="#828486"
+        android:gravity="center"
+        android:shadowColor="#00000000"
+        android:shadowDx="10"
+        android:shadowDy="12"
+        android:text="Asynchrone"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accueil" />
+
+    <Button
+        android:id="@+id/differee"
+        android:layout_width="183dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="15dp"
+        android:background="#828486"
+        android:gravity="center"
+        android:text="DIFFEREE"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/asynchrone" />
+
+    <Button
+        android:id="@+id/serJson"
+        android:layout_width="183dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="15dp"
+        android:background="#828486"
+        android:gravity="center"
+        android:text="SERIALISATION"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/differee" />
+
+    <Button
+        android:id="@+id/compressee"
+        android:layout_width="183dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="15dp"
+        android:background="#828486"
+        android:gravity="center"
+        android:text="COMPRESSEE"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serJson" />
+
+    <Button
+        android:id="@+id/graphql"
+        android:layout_width="183dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="15dp"
+        android:background="#828486"
+        android:gravity="center"
+        android:text="GRAPHQL"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/compressee" />
+
     <TextView
+        android:id="@+id/accueil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="40dp"
+        android:text="Accueil"
+        android:textSize="36sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Created by Dutu Launay, Carpita, Teklehaimanot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
