@@ -6,7 +6,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class asynchroneActivity extends AppCompatActivity {
+public class AsynchroneActivity extends AppCompatActivity {
 
     Person marion  = new Person("Dutu Launay", "Marion", 24);
     Person edoardo = new Person("Carpita", "Edoardo", 26);
@@ -24,7 +24,11 @@ public class asynchroneActivity extends AppCompatActivity {
         Button btn = findViewById(R.id.btn_send);
         btn.setOnClickListener((v) -> {
 
-        scm.sendRequest("http://sym.iict.ch/rest/txt", marion.toString());
+            try {
+                scm.sendRequest("http://sym.iict.ch/rest/txt", marion.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         });
 
