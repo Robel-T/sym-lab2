@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.LinkedList;
 
 public class SymComManager extends AsyncTask<String,Void, String> {
 
@@ -25,15 +26,14 @@ public class SymComManager extends AsyncTask<String,Void, String> {
 
     private CommunicationEventListener communicationEventListener = null;
 
-    public void sendRequest(String url, String request) throws Exception {
-        this.execute(url,request);
+    public void sendRequest( String[] request) throws Exception {
+        this.execute(request);
 
     }
 
     public void setCommunicationEventListener(CommunicationEventListener communicationEventListener) {
         this.communicationEventListener = communicationEventListener;
     }
-
 
     @Override
     protected String doInBackground(String... strings) {
@@ -46,7 +46,7 @@ public class SymComManager extends AsyncTask<String,Void, String> {
 
             urlConnection = (HttpURLConnection) url_server.openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "text/plain");
+            urlConnection.setRequestProperty(strings[2], strings[3]);
 
 
             OutputStream outputStream = urlConnection.getOutputStream();
@@ -77,8 +77,7 @@ public class SymComManager extends AsyncTask<String,Void, String> {
         }
 
         return response.toString();
-        // IL faut parser la string et l envoyer au serveur puis retourner la string (prototype, il faudra
-        // faire un formulaire et envoyer
+
     }
 
     protected void onPostExecute(String result) {

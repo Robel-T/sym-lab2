@@ -11,10 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AsynchroneActivity extends AppCompatActivity {
 
-    Person marion  = new Person("Dutu Launay", "Marion", 24);
-    Person edoardo = new Person("Carpita", "Edoardo", 26);
-    Person robel   = new Person("Teklehaimanot", "Robel", 26);
-
     EditText editText;
     TextView return_server;
 
@@ -44,10 +40,14 @@ public class AsynchroneActivity extends AppCompatActivity {
                             }
                         });
 
+                String requestBody = editText.getText().toString();
+                String address = "http://sym.iict.ch/rest/txt";
+                String headersContent = "Content-Type";
+                String headersType = "text/plain";
 
-                String request = editText.getText().toString();
+                String[] request = {address,requestBody,headersContent,headersType};
 
-                scm.sendRequest("http://sym.iict.ch/rest/txt", request);
+                scm.sendRequest(request);
             } catch (Exception e) {
                 e.printStackTrace();
             }
