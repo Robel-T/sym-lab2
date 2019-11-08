@@ -22,9 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DelayedActivity extends AppCompatActivity {
 
+    private int index = 0;
     private EditText editText;
     private TextView return_server;
-    private ArrayList<String[]> waiting_requests;
+    private Map<Integer, String[]> waiting_requests = new HashMap<>();
 
     SymComManager scm = new SymComManager();
 
@@ -43,12 +44,19 @@ public class DelayedActivity extends AppCompatActivity {
         btn.setOnClickListener((v) -> {
 
             try {
+                scm.setCommunicationEventListener(
+                        new CommunicationEventListener() {
+                            public boolean handleServerResponse(String response) {
+                                return_server.setText(response);
+                                return true;
+
+                            }
+                        });
 
                 String requestBody = editText.getText().toString();
                 String address = "http://sym.iict.ch/rest/txt";
                 String headersContent = "Content-Type";
                 String headersType = "text/plain";
-                // ServerRequest serverRequest = new ServerRequest(request,address,headers);
 
                 String[] request = {address, requestBody, headersContent, headersType};
 
@@ -60,17 +68,23 @@ public class DelayedActivity extends AppCompatActivity {
                         if (waiting_requests.isEmpty()) {
                             Log.w("BOUCLE", "requete simple");
                             scm.sendRequest(request);
+                            Log.w("BOUCLE", "requete simple traite");
+
                         } else {
                             Log.w("BOUCLE", "il y a requetes: " + waiting_requests.size());
-                            for (String[] waiting : waiting_requests) {
+                            for (String[] waiting : waiting_requests.values()) {
                                 Log.w("BOUCLE", "requete buffer");
                                 scm.sendRequest(waiting);
                             }
                         }
                         break;
                     } else {
-                        Log.w("BOUCLE", "reseau desactive, ++ buffer");
-                        waiting_requests.add(request);
+                        Log.w("BOUCLE", "reseau desactive");
+                        if (!waiting_requests.containsKey(index-1)) {
+                            Log.w("BOUCLE", "ajoute dans le mapping");
+                            waiting_requests.put(index, request);
+                            index++;
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -84,6 +98,7 @@ public class DelayedActivity extends AppCompatActivity {
     private boolean isNetworkAvailable(Context ctx) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
