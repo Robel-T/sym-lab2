@@ -3,12 +3,14 @@ package com.example.sym_lab2;
 public class Person {
     private String nom;
     private String prenom;
-    private int age;
+    private String genre;
+    private int phone;
 
-    public Person(String n, String p, int a){
+    public Person(String n, String p, String g, int ph){
         nom    = n;
         prenom = p;
-        age    = a;
+        genre  = g;
+        phone  = ph;
     }
 
     public String getNom(){
@@ -19,11 +21,16 @@ public class Person {
         return prenom;
     }
 
-    public int getAge(){
-        return age;
-    }
 
     public String toString(){
-        return nom + " " + prenom + ", " + age;
+        return nom + " " + prenom + ", " + genre + "\nMobile: " + phone;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public int getPhone() {
+        return phone;
     }
 }

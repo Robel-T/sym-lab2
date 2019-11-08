@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:ems="10"
+        android:hint="firstName" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:ems="10"
+        android:hint="lastName" />
+
+    <EditText
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:ems="10"
+        android:hint="gender" />
+
+    <EditText
+        android:id="@+id/tel"
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="07x xxx xx xx" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="92dp">
+
+        <Button
+            android:id="@+id/btn_sendjson"
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:gravity="center"
+            android:text="Envoyer (JSON)" />
+
+        <Button
+            android:id="@+id/btn_sendxml"
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:text="Envoyer (XML)" />
+
+
+    </GridLayout>
+
+
+    <TextView
+        android:id="@+id/return_server"
+        android:layout_width="match_parent"
+        android:layout_height="121dp"
+        android:text="Retour" />
+
+</LinearLayout>

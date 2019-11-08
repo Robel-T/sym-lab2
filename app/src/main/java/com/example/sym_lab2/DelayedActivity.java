@@ -25,7 +25,7 @@ public class DelayedActivity extends AppCompatActivity {
     private int index = 0;
     private EditText editText;
     private TextView return_server;
-    private Map<Integer, String[]> waiting_requests = new HashMap<>();
+    private LinkedList<String[]> waiting_requests = new LinkedList<>();
 
     SymComManager scm = new SymComManager();
 
@@ -44,7 +44,7 @@ public class DelayedActivity extends AppCompatActivity {
         btn.setOnClickListener((v) -> {
 
             try {
-                scm.setCommunicationEventListener(
+                    scm.setCommunicationEventListener(
                         new CommunicationEventListener() {
                             public boolean handleServerResponse(String response) {
                                 return_server.setText(response);
@@ -60,35 +60,34 @@ public class DelayedActivity extends AppCompatActivity {
 
                 String[] request = {address, requestBody, headersContent, headersType};
 
-                while (true) {
-                    Log.w("BOUCLE", "entering");
-                    if (isNetworkAvailable(this)) {
-                        Log.w("BOUCLE", "reseau active");
+                waiting_requests.add(request);
 
-                        if (waiting_requests.isEmpty()) {
-                            Log.w("BOUCLE", "requete simple");
-                            scm.sendRequest(request);
-                            Log.w("BOUCLE", "requete simple traite");
+                if (isNetworkAvailable(DelayedActivity.this)) {
+                    scm.sendRequest(waiting_requests.pop());
+                } else {
+                    new Thread(() -> {
+                        while (!isNetworkAvailable(DelayedActivity.this)) {
 
-                        } else {
-                            Log.w("BOUCLE", "il y a requetes: " + waiting_requests.size());
-                            for (String[] waiting : waiting_requests.values()) {
-                                Log.w("BOUCLE", "requete buffer");
-                                scm.sendRequest(waiting);
+                            try {
+                                //Affichage du nombre de message en attente
+                                Log.w("Boucle", "pas de reseau");
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }
-                        break;
-                    } else {
-                        Log.w("BOUCLE", "reseau desactive");
-                        if (!waiting_requests.containsKey(index-1)) {
-                            Log.w("BOUCLE", "ajoute dans le mapping");
-                            waiting_requests.put(index, request);
-                            index++;
+                        //Lorsque le réseau est de retour appel de la tâche d'envoie des message
+                        try {
+                            while(!waiting_requests.isEmpty()) {
+                                scm.sendRequest(waiting_requests.pop());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }
+                    }).start();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
 
         });

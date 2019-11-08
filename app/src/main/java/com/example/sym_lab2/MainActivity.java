@@ -11,14 +11,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Button asynch     = null;
     private Button delayed    = null;
+    private Button json       = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.asynch = findViewById(R.id.asynchrone);
+        this.asynch  = findViewById(R.id.asynchrone);
         this.delayed = findViewById(R.id.differee);
+        this.json    = findViewById(R.id.serJson);
 
         asynch.setOnClickListener((v) -> {
                 Intent intent = new Intent(this, AsynchroneActivity.class);
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
         delayed.setOnClickListener((v) -> {
             Intent intent = new Intent(this, DelayedActivity.class);
+            this.startActivity(intent);
+        });
+
+        json.setOnClickListener((v) -> {
+            Intent intent = new Intent(this, JsonActivity.class);
             this.startActivity(intent);
         });
     }
