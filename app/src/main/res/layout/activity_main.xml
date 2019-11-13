@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/differee" />
 
     <Button
-        android:id="@+id/compressee"
+        android:id="@+id/compress"
         android:layout_width="183dp"
         android:layout_height="96dp"
         android:layout_marginTop="15dp"
@@ -78,7 +78,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compressee" />
+        app:layout_constraintTop_toBottomOf="@+id/compress" />
 
     <TextView
         android:id="@+id/accueil"

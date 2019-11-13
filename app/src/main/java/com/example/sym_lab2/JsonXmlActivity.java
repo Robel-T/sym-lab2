@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 
-public class JsonActivity extends AppCompatActivity{
+public class JsonXmlActivity extends AppCompatActivity{
 
         EditText fistName;
         EditText lastName;

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -12,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     private Button asynch     = null;
     private Button delayed    = null;
     private Button json       = null;
+    private Button compress   = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         this.asynch  = findViewById(R.id.asynchrone);
         this.delayed = findViewById(R.id.differee);
         this.json    = findViewById(R.id.serJson);
+        this.compress= findViewById(R.id.compress);
+
 
         asynch.setOnClickListener((v) -> {
                 Intent intent = new Intent(this, AsynchroneActivity.class);
@@ -33,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         json.setOnClickListener((v) -> {
-            Intent intent = new Intent(this, JsonActivity.class);
+            Intent intent = new Intent(this, JsonXmlActivity.class);
+            this.startActivity(intent);
+        });
+
+        compress.setOnClickListener((v) -> {
+            Intent intent = new Intent(this, CompressActivity.class);
             this.startActivity(intent);
         });
     }

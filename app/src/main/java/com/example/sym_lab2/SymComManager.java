@@ -44,7 +44,7 @@ public class SymComManager {
         @Override
         protected String doInBackground(String... strings) {
             URL url_server = null;
-            String prettyFormat = "";
+            ResponseHandler rh = null;
             HttpURLConnection urlConnection = null;
             String fromServer;
             StringBuilder response = new StringBuilder();
@@ -70,37 +70,7 @@ public class SymComManager {
                     response.append(fromServer);
                 }
 
-                if(strings[3].equals("application/json")){
-                    prettyFormat = response.substring(0,strings[1].length()-1);
-                    prettyFormat += "}";
-
-                    Gson gson = new Gson();
-                    return (gson.fromJson(prettyFormat,Person.class)).toString();
-                }
-                else if(strings[3].equals("application/xml")){
-
-                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    InputSource is = new InputSource(new StringReader(response.toString()));
-                    Document doc = db.parse(is);
-                    doc.getDocumentElement().normalize();
-
-                    NodeList nodes = doc.getElementsByTagName("person");
-                    Node node = nodes.item(0);
-
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        Element element = (Element) node;
-                        prettyFormat = "Message reçu par le serveur\n"
-                                + element.getElementsByTagName("name").item(0).getTextContent()
-                                + " " + element.getElementsByTagName("firstname").item(0).getTextContent()
-                                + "\nGender : " + element.getElementsByTagName("gender").item(0).getTextContent()
-                                + "\nMobile : " + element.getElementsByTagName("phone").item(0).getTextContent();
-                    }
-                }
-                else {
-                    prettyFormat = response.substring(0,strings[1].length());
-                }
-
+                rh = new ResponseHandler(response, strings[1],strings[3]);
 
             } catch (ProtocolException e) {
                 e.printStackTrace();
@@ -108,15 +78,11 @@ public class SymComManager {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } finally {
+            }finally {
                 urlConnection.disconnect();
             }
 
-            return prettyFormat;
+            return rh.ResponseDispatcher();
 
         }
         protected void onPostExecute(String result) {

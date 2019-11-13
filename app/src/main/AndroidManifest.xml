@@ -36,7 +36,14 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <activity android:name=".JsonActivity" android:parentActivityName=".MainActivity">
+        <activity android:name=".JsonXmlActivity" android:parentActivityName=".MainActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity android:name=".CompressActivity" android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
