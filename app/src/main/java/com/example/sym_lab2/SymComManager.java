@@ -7,6 +7,13 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -16,11 +23,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.LinkedList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class SymComManager {
 
@@ -67,13 +79,23 @@ public class SymComManager {
                 }
                 else if(strings[3].equals("application/xml")){
 
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    InputSource is = new InputSource(new StringReader(response.toString()));
+                    Document doc = db.parse(is);
+                    doc.getDocumentElement().normalize();
 
-                    /// Faire le retour !!!!!!!
-                    prettyFormat = response.substring(0,strings[1].length());
-                    System.out.println(prettyFormat);
+                    NodeList nodes = doc.getElementsByTagName("person");
+                    Node node = nodes.item(0);
 
-
-
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element element = (Element) node;
+                        prettyFormat = "Message reçu par le serveur\n"
+                                + element.getElementsByTagName("name").item(0).getTextContent()
+                                + " " + element.getElementsByTagName("firstname").item(0).getTextContent()
+                                + "\nGender : " + element.getElementsByTagName("gender").item(0).getTextContent()
+                                + "\nMobile : " + element.getElementsByTagName("phone").item(0).getTextContent();
+                    }
                 }
                 else {
                     prettyFormat = response.substring(0,strings[1].length());
@@ -85,6 +107,10 @@ public class SymComManager {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
                 e.printStackTrace();
             } finally {
                 urlConnection.disconnect();
@@ -108,5 +134,13 @@ public class SymComManager {
         this.communicationEventListener = communicationEventListener;
     }
 
+    public static String getCharacterDataFromElement(Element e) {
+        Node child = e.getFirstChild();
+        if (child instanceof CharacterData) {
+            CharacterData cd = (CharacterData) child;
+            return cd.getData();
+        }
+        return "?";
+    }
 }
 
