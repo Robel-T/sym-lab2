@@ -1,4 +1,4 @@
-package com.example.sym_lab2;
+package com.example.sym_lab2.Interface;
 
 import java.util.EventListener;
 

@@ -1,21 +1,9 @@
-package com.example.sym_lab2;
+package com.example.sym_lab2.Business;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.google.gson.Gson;
+import com.example.sym_lab2.Interface.CommunicationEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.CharacterData;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,16 +11,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.LinkedList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class SymComManager {
 
@@ -44,7 +26,6 @@ public class SymComManager {
         @Override
         protected String doInBackground(String... strings) {
             URL url_server = null;
-            ResponseHandler rh = null;
             HttpURLConnection urlConnection = null;
             String fromServer;
             StringBuilder response = new StringBuilder();
@@ -53,7 +34,13 @@ public class SymComManager {
 
                 urlConnection = (HttpURLConnection) url_server.openConnection();
                 urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty(strings[2], strings[3]);
+                if(strings.length <= 4) {
+                    urlConnection.setRequestProperty(strings[2], strings[3]);
+                }
+                else {
+                    urlConnection.setRequestProperty(strings[2], strings[3]);
+                    urlConnection.setRequestProperty(strings[4],strings[5]);
+                }
 
 
                 OutputStream outputStream = urlConnection.getOutputStream();
@@ -70,8 +57,6 @@ public class SymComManager {
                     response.append(fromServer);
                 }
 
-                rh = new ResponseHandler(response, strings[1],strings[3]);
-
             } catch (ProtocolException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
@@ -82,7 +67,7 @@ public class SymComManager {
                 urlConnection.disconnect();
             }
 
-            return rh.ResponseDispatcher();
+            return response.toString();
 
         }
         protected void onPostExecute(String result) {
@@ -100,13 +85,5 @@ public class SymComManager {
         this.communicationEventListener = communicationEventListener;
     }
 
-    public static String getCharacterDataFromElement(Element e) {
-        Node child = e.getFirstChild();
-        if (child instanceof CharacterData) {
-            CharacterData cd = (CharacterData) child;
-            return cd.getData();
-        }
-        return "?";
-    }
 }
 

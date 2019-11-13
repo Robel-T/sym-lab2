@@ -1,4 +1,4 @@
-package com.example.sym_lab2;
+package com.example.sym_lab2.Activity;
 
 
 import android.content.Context;
@@ -9,20 +9,15 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.sym_lab2.Interface.CommunicationEventListener;
+import com.example.sym_lab2.R;
+import com.example.sym_lab2.Business.SymComManager;
 
 
-public class DelayedActivity extends AppCompatActivity {
+public class DelayedActivity extends AppCompatActivity implements CommunicationEventListener {
 
-    private int index = 0;
     private EditText editText;
     private TextView return_server;
     private LinkedList<String[]> waiting_requests = new LinkedList<>();
@@ -44,23 +39,8 @@ public class DelayedActivity extends AppCompatActivity {
         btn.setOnClickListener((v) -> {
 
             try {
-                    scm.setCommunicationEventListener(
-                        new CommunicationEventListener() {
-                            public boolean handleServerResponse(String response) {
-                                return_server.setText(response);
-                                return true;
-
-                            }
-                        });
-
-                String requestBody = editText.getText().toString();
-                String address = "http://sym.iict.ch/rest/txt";
-                String headersContent = "Content-Type";
-                String headersType = "text/plain";
-
-                String[] request = {address, requestBody, headersContent, headersType};
-
-                waiting_requests.add(request);
+                scm.setCommunicationEventListener(this);
+                waiting_requests.add(requestHandle());
 
                 if (isNetworkAvailable(DelayedActivity.this)) {
                     scm.sendRequest(waiting_requests.pop());
@@ -78,7 +58,7 @@ public class DelayedActivity extends AppCompatActivity {
                         }
                         //Lorsque le réseau est de retour appel de la tâche d'envoie des message
                         try {
-                            while(!waiting_requests.isEmpty()) {
+                            while (!waiting_requests.isEmpty()) {
                                 scm.sendRequest(waiting_requests.pop());
                             }
                         } catch (Exception e) {
@@ -102,5 +82,20 @@ public class DelayedActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private String[] requestHandle(){
+        String requestBody = editText.getText().toString();
+        String address = "http://sym.iict.ch/rest/txt";
+        String headersContent = "Content-Type";
+        String headersType = "text/plain";
 
+        return new String[]{address,requestBody,headersContent,headersType};
+    }
+
+    @Override
+    public boolean handleServerResponse(String response) {
+        String[] request = requestHandle();
+        return_server.setText(response.substring(0,request[1].length()));
+
+        return true;
+    }
 }
