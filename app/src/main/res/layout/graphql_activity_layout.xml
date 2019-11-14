@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-        <ListView
-            android:id="@+id/listActors"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="500dp" />
+            android:layout_height="78dp"
+            android:text="Actors"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            app:fontFamily="@font/aladin"/>
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="85dp" />
 
+        <TextView
+            android:id="@+id/return_id"
+            android:layout_width="match_parent"
+            android:layout_height="523dp"
+            android:lineSpacingExtra="12sp"
+            android:paddingTop="50dp"
+            android:text="test"
+            android:textSize="14sp" />
 </LinearLayout>

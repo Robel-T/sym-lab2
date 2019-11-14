@@ -62,12 +62,10 @@ public class CompressActivity extends AppCompatActivity implements Communication
     private String[] requestHandle() throws IOException {
         String requestBody = editText.getText().toString();
         String address = "http://sym.iict.ch/rest/txt";
-        String headersContent = "Content-Type";
-        String headersType = "text/plain";
-        String headersContent2 = "Content-Encoding";
-        String headersType2 = "deflate";
+        String headersContent = "X-Content-Encoding";
+        String headersType = "gzip, deflate";
 
-        return new String[]{address,compressRequest(requestBody).toString(),headersContent,headersType,headersContent2,headersType2};
+        return new String[]{address,compressRequest(requestBody).toString(),headersContent,headersType};
     }
 
     private byte[] compressRequest (String request) throws IOException {
