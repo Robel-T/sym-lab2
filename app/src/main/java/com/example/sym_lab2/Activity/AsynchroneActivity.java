@@ -10,6 +10,8 @@ import com.example.sym_lab2.Interface.CommunicationEventListener;
 import com.example.sym_lab2.R;
 import com.example.sym_lab2.Business.SymComManager;
 
+import java.util.Objects;
+
 
 public class AsynchroneActivity extends AppCompatActivity implements CommunicationEventListener {
 
@@ -42,8 +44,8 @@ public class AsynchroneActivity extends AppCompatActivity implements Communicati
     @Override
     public boolean handleServerResponse(String response) {
 
-        String[] request = requestHandle();
-        return_server.setText(response.substring(0,request[1].length()));
+        String[] parsedResponse = response.split(Objects.requireNonNull(System.getProperty("line.separator")));
+        return_server.setText(parsedResponse[0]);
 
         return true;
     }

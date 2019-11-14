@@ -19,6 +19,8 @@ import com.example.sym_lab2.Business.SymComManager;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Objects;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -85,9 +87,10 @@ public class JsonXmlActivity extends AppCompatActivity implements CommunicationE
             String[] request = requestHandle();
             String prettyFormat = "";
 
+        String[] parsedResponse = response.split(Objects.requireNonNull(System.getProperty("line.separator")));
+
             if (request[3].equals("application/json")) {
-                prettyFormat = response.substring(0, request[1].length() - 1);
-                prettyFormat += "}";
+                prettyFormat = parsedResponse[0];
 
                 Gson gson = new Gson();
                 return_server.setText((gson.fromJson(prettyFormat, Person.class)).toString());

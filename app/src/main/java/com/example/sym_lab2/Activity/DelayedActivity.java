@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.util.LinkedList;
+import java.util.Objects;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.sym_lab2.Interface.CommunicationEventListener;
 import com.example.sym_lab2.R;
@@ -93,8 +95,8 @@ public class DelayedActivity extends AppCompatActivity implements CommunicationE
 
     @Override
     public boolean handleServerResponse(String response) {
-        String[] request = requestHandle();
-        return_server.setText(response.substring(0,request[1].length()));
+        String[] parsedResponse = response.split(Objects.requireNonNull(System.getProperty("line.separator")));
+        return_server.setText(parsedResponse[0]);
 
         return true;
     }

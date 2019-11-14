@@ -1,8 +1,11 @@
 package com.example.sym_lab2.Business;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.sym_lab2.Interface.CommunicationEventListener;
+
+import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 public class SymComManager {
 
@@ -29,6 +33,8 @@ public class SymComManager {
             HttpURLConnection urlConnection = null;
             String fromServer;
             StringBuilder response = new StringBuilder();
+            String body = null;
+
             try {
                 url_server = new URL(strings[0]);
 
@@ -44,13 +50,12 @@ public class SymComManager {
                 bufferedWriter.write(strings[1]);
                 bufferedWriter.flush();
 
-                InputStream inputStream = urlConnection.getInputStream();
-                InputStreamReader inputStreamReader = new InputStreamReader((inputStream));
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-                while ((fromServer = bufferedReader.readLine()) != null) {
-                    response.append(fromServer);
-                }
+                InputStream inputStream = urlConnection.getInputStream();
+
+                String encoding = urlConnection.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+                body = IOUtils.toString(inputStream, encoding);
 
             } catch (ProtocolException e) {
                 e.printStackTrace();
@@ -62,7 +67,7 @@ public class SymComManager {
                 urlConnection.disconnect();
             }
 
-            return response.toString();
+            return body;
 
         }
         protected void onPostExecute(String result) {

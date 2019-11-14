@@ -10,7 +10,10 @@ import com.example.sym_lab2.R;
 import com.example.sym_lab2.Business.SymComManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Objects;
+import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
@@ -47,15 +50,16 @@ public class CompressActivity extends AppCompatActivity implements Communication
 
     @Override
     public boolean handleServerResponse(String response) {
-        String prettyFormat ="";
+        String prettyFormat = "";
+        String[] parsedResponse = response.split(Objects.requireNonNull(System.getProperty("line.separator")));
         try {
-            prettyFormat =  decompressRequest(response.getBytes());
+            /////////////CECI NE MARCHE PAS //////////////////////////////
+            prettyFormat = decompressRequest(parsedResponse[0].getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return_server.setText(prettyFormat);
-
         return true;
     }
 
@@ -70,8 +74,7 @@ public class CompressActivity extends AppCompatActivity implements Communication
 
     private byte[] compressRequest (String request) throws IOException {
 
-        byte[] input =request.getBytes(Charset.defaultCharset());
-
+        byte[] input = request.getBytes("UTF-8");
         ByteArrayOutputStream compressed = new ByteArrayOutputStream();
         Deflater deflater = new Deflater();
         DeflaterOutputStream defStream = new DeflaterOutputStream(compressed,deflater);
@@ -88,7 +91,8 @@ public class CompressActivity extends AppCompatActivity implements Communication
         inflater.setInput(compressedRequest);
 
         InflaterOutputStream infStream = new InflaterOutputStream(decompressed, inflater);
-        return infStream.toString();
+        infStream.finish();
+        return decompressed.toString();
     }
 
 

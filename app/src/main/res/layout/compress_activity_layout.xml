@@ -21,6 +21,6 @@
     <TextView
         android:id="@+id/return_server"
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="587dp"
         android:text="Retour" />
 </LinearLayout>
