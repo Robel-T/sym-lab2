@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -52,12 +53,13 @@ public class CompressActivity extends AppCompatActivity implements Communication
     public boolean handleServerResponse(String response) {
         String prettyFormat = "";
         String[] parsedResponse = response.split(Objects.requireNonNull(System.getProperty("line.separator")));
-        try {
-            /////////////CECI NE MARCHE PAS //////////////////////////////
-            prettyFormat = decompressRequest(parsedResponse[0].getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        /* comme la decompression ne marche malheureusement pas, on affiche juste la valeur de retour compresse*/
+        //try {
+        // prettyFormat = decompressRequest(parsedResponse[0].getBytes());
+            prettyFormat = parsedResponse[0];
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
 
         return_server.setText(prettyFormat);
         return true;
@@ -68,8 +70,10 @@ public class CompressActivity extends AppCompatActivity implements Communication
         String address = "http://sym.iict.ch/rest/txt";
         String headersContent = "X-Content-Encoding";
         String headersType = "gzip, deflate";
+        String headersContent2 = "X-Network";
+        String headersType2 = "CSD";
 
-        return new String[]{address,compressRequest(requestBody).toString(),headersContent,headersType};
+        return new String[]{address, compressRequest(requestBody).toString(),headersContent,headersType, headersContent2,headersType2};
     }
 
     private byte[] compressRequest (String request) throws IOException {

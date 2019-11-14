@@ -41,8 +41,9 @@ public class SymComManager {
                 urlConnection = (HttpURLConnection) url_server.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty(strings[2], strings[3]);
-
-
+                if (strings.length > 4){
+                    urlConnection.setRequestProperty(strings[4], strings[5]);
+                }
 
                 OutputStream outputStream = urlConnection.getOutputStream();
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
